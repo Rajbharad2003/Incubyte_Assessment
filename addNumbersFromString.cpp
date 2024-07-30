@@ -8,27 +8,23 @@ int add(string numbers)
     stringstream numberStream(numbers);
     int sumOfNumbers = 0;
     int currentNumber;
-    char comma;
+    char delimiter;
 
-    // Scan the first number
-    if (!(numberStream >> currentNumber)) {
-        // If the first number is not valid
-        return -1;
-    }
-    sumOfNumbers += currentNumber;
-
-    // Scan number saperated by comma separated by comma.
-    while (numberStream >> comma) { 
-        if (comma != ',') {
-            //There is other charactor than comma.
-            return -1;
-        } 
-
-        if (!(numberStream >> currentNumber)) {
-            // If there's no number after the comma
-            return -1;
-        }
+    // Read numbers separated by commas or newlines
+    while (numberStream >> currentNumber) {
         sumOfNumbers += currentNumber;
+
+        // Read the next character to check if it's a comma or newline
+        if (numberStream >> delimiter) {
+            if(delimiter == ',')
+                continue;
+
+            // Case number saperated by new line. 
+            if(delimiter == '\\') {
+                if(numberStream >> delimiter && delimiter != 'n')
+                    return -1;
+            }
+        }
     }
 
     return sumOfNumbers;
@@ -37,21 +33,30 @@ int add(string numbers)
 int main()
 {
     string numbers;
-    cout << "Enter Sequence of number : ";
-    cin >> numbers;
+    cout << "Enter Sequence of number saperated by commas or enter number in new-line (For stop taking input press ctrl + D) : " << endl;
 
-    int sumOfString = add(numbers);
+    // Scan multi-line input from.
+    string currLine;
+    while (getline(cin, currLine))
+    {
+        numbers += currLine;
+        numbers += "\\n";
+    }
 
-    //There is some mistake in input.
-    if(sumOfString == -1)
+    cout << numbers << endl;
+
+    //We assume that input will be correct.
+    int sumOfNumbers = add(numbers);
+
+    // There is some mistake in input.
+    if (sumOfNumbers == -1)
     {
         cout << "There is wrong input. Because, there should be number after comma but there is not any number after comma." << endl;
-
         return 0;
     }
 
-    //print the answer of the string numbers sum.
-    cout << "Answer of your number of string is : " << sumOfString << endl;
+    // Print the result of the sum of numbers
+    cout << "The sum of the numbers is: " << sumOfNumbers << endl;
 
     return 0;
 }
