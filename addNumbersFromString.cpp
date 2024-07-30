@@ -1,9 +1,10 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 using namespace std;
 
-int add(string numbers)
+int add(string numbers, vector<int> &negativeNumbers)
 {
     stringstream numberStream(numbers);
     int sumOfNumbers = 0;
@@ -18,6 +19,9 @@ int add(string numbers)
 
     // Read numbers separated by commas or newlines
     while (numberStream >> currentNumber) {
+        if(currentNumber < 0) {
+            negativeNumbers.push_back(currentNumber);
+        }
         sumOfNumbers += currentNumber;
 
         // Read the next character to check if it's a comma or newline
@@ -51,8 +55,29 @@ int main()
 
     cout << numbers << endl;
 
+    vector<int> negativeNumbers;
+    int sumOfNumbers = 0;
+
     //We assume that input will be correct.
-    int sumOfNumbers = add(numbers);
+    try {
+        sumOfNumbers = add(numbers, negativeNumbers);
+
+        if(negativeNumbers.size() != 0) {
+            throw runtime_error(
+                "negative numbers not allowed"
+            );
+        }
+    }
+    catch (const exception &e) {
+        cout << e.what() << " :";
+
+        // print all negative numbers.
+        for(int i=0 ; i<negativeNumbers.size() ; i++)
+            cout << " ," << negativeNumbers[i];
+
+        cout << endl;
+        return 0;
+    }
 
     // There is some mistake in input.
     if (sumOfNumbers == -1)
