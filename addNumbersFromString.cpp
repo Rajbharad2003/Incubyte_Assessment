@@ -8,7 +8,13 @@ int add(string numbers)
     stringstream numberStream(numbers);
     int sumOfNumbers = 0;
     int currentNumber;
+    char customeDelimiter;
     char delimiter;
+
+    numberStream >> delimiter;
+    numberStream >> delimiter;
+
+    numberStream >> customeDelimiter;
 
     // Read numbers separated by commas or newlines
     while (numberStream >> currentNumber) {
@@ -16,7 +22,7 @@ int add(string numbers)
 
         // Read the next character to check if it's a comma or newline
         if (numberStream >> delimiter) {
-            if(delimiter == ',')
+            if(delimiter == customeDelimiter)
                 continue;
 
             // Case number saperated by new line. 
