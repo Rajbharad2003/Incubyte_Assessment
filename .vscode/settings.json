@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "ratio": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "sstream": "cpp",
+        "iosfwd": "cpp"
     }
 }
